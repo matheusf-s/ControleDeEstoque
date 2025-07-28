@@ -10,13 +10,20 @@ mycursor = mydb.cursor()
 
 mycursor.execute("USE estoque")
 
+def ApagarTodasInfoProdutos():
+
+  ApagarTudoProdutos = ("TRUNCATE TABLE produtos")
+
+  mycursor.execute(ApagarTudoProdutos)
+
+
 def CadastrarProdutos():
     
     try:
       NomeProduto = (input("Digite o nome do produto: "))
       CodigoSKU = int(input("Digite o código SKU do produto: "))
       QuantAtual = int(input("Digite a quantidade atual do produto: "))
-      PrecoCompra = float(input("Digite o valor de compra do produto: ")) 
+      PrecoCompra = float(input("Digite o valor de compra do produto: "))
       PrecoVenda = float(input("Digite o valor de venda do produto: "))
       EstoqueMin = int(input("Digite o estoque mínimo do produto: "))
 
@@ -27,36 +34,35 @@ def CadastrarProdutos():
       mydb.commit()
 
 
-      print("Dados inseridos corretamento")
+      print(f"Novo produto: {NomeProduto}, registrado corretamento")
     except Exception as e:
       print(f"Erro: {e}")
 
-
-def ApagarTodasInfoProdutos():
-
-  ApagarTudoProdutos = ("TRUNCATE TABLE produtos")
-
-  mycursor.execute(ApagarTudoProdutos)
+def LerProdutos():
+  print("O que você deseja ver?")
 
 
+def AtualizarInfo():
+  print("O que você deseja atualizar?")
 
+def DeletarInfo():
+  print("O que você deseja deletar?")
 
+def Escolha():
+  while True:
+    try:
+      Escolha = int(input("Bem-Vindo ao Estoque!!\nO que você deseja realizar?\n1- Cadastrar Novo Produto\n2- Ler Informação\n3- Atualizar Estoque\n4- Deletar Produto!\n5 - Sair do Programa"))
+      if Escolha == 1:
+        CadastrarProdutos()
+      elif Escolha == 2:
+        LerProdutos()
+      elif Escolha == 3:
+        AtualizarInfo()
+      elif Escolha == 4:
+        DeletarInfo()
+      elif Escolha == 5:
+        break
+    except: 
+      print("Digite um dos número válidos!")
 
-
-
-def MostrarValores():
-  mycursor.execute("SELECT * FROM produtos")
-
-  colunas = [i[0] for i in mycursor.description]
-
-  linhas = mycursor.fetchall()
-
-  print(" | ".join(colunas))
-  print("-" * 50)
-  for linha in linhas:
-      print(" | ".join(str(valor) for valor in linha))
-
-CadastrarProdutos()
-MostrarValores()
-
-
+Escolha()
