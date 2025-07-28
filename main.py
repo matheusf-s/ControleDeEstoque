@@ -10,12 +10,13 @@ mycursor = mydb.cursor()
 
 mycursor.execute("USE estoque")
 
-def ApagarTodasInfoProdutos():
-
-  ApagarTudoProdutos = ("TRUNCATE TABLE produtos")
-
-  mycursor.execute(ApagarTudoProdutos)
-
+nomeColuna1 = "id"
+nomeColuna2 = "name"
+nomeColuna3 = "sku"
+nomeColuna4 = "quantidade_atual"
+nomeColuna5 = "preco_compra"
+nomeColuna6 = "preco_venda"
+nomeColuna7 = "estoque_minimo"
 
 def CadastrarProdutos():
     
@@ -38,8 +39,28 @@ def CadastrarProdutos():
     except Exception as e:
       print(f"Erro: {e}")
 
-def LerProdutos():
-  print("O que você deseja ver?")
+def ProcurarProdutos():
+  try:
+    ParametroLeitura = int(input("Qual parametro você deseja utilizar para a procura?\n1- ID\n2- Codigo SKU\n4- Sair do Programa"))
+    if ParametroLeitura == 1:
+      Parametro = "id"
+    elif ParametroLeitura == 2:
+      Parametro = "sku"
+    ValorDeProcura = int(input(f"Digite o {Parametro} do produto desejado: "))
+    Procurar = (f"SELECT * FROM produtos WHERE {Parametro} = {ValorDeProcura};")
+    mycursor.execute(Procurar)
+    Resultado = mycursor.fetchall()
+    Final = Resultado[0]
+    print(f"ID = {Final[0]}")
+    print(f"Nome = {Final[1]}")
+    print(f"Codigo SKU = {Final[2]}")
+    print(f"Quantidade Atual = {Final[3]}")
+    print(f"Preço de Compra = R${Final[4]}")
+    print(f"Preço de Venda = R${Final[5]}")
+    print(f"Estoque mínimo = {Final[6]}")
+  except:
+    print("Produto não encontrado! Voltando para o menu!")
+    Escolha()
 
 
 def AtualizarInfo():
@@ -55,7 +76,7 @@ def Escolha():
       if Escolha == 1:
         CadastrarProdutos()
       elif Escolha == 2:
-        LerProdutos()
+        ProcurarProdutos()
       elif Escolha == 3:
         AtualizarInfo()
       elif Escolha == 4:
